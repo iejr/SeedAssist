@@ -9,7 +9,7 @@ echo "[`date`] torrent_file: " $torrent_file
 echo "[`date`] secondary_path: " $secondary_path
 
 echo "to start add_torrent.py"
-if ! /usr/bin/python3 $cur_dir/add_torrent.py "$dst_hostname" "$torrent_file" "$secondary_path"; then
+if ! /usr/bin/python3 $cur_dir/add_torrent.py "$dst_hostname" "$tr_port" "$tr_username" "$tr_password" "$torrent_file" "$secondary_path"; then
     echo "Failed to execute add_torrent.py!"
     exit 1
 fi
