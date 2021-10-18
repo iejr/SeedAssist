@@ -7,17 +7,21 @@ torrent_name=$1
 input_path=$2
 info_hash=$3
 
-if [[ "$input_path" == "/home/vdisk0/Res/Mutable/Complete/Local*" || "$input_path" == "/home/vdisk0/PT/Complete/Local*" ]]; then
-    echo "[`date`] local file, won't move to secondary client"
-    exit 0
-fi
-
 if ! source $cur_dir/credential_config.sh; then
     echo "[`date`] on_complete failed import credetials from credential_config.sh! It's likely to fail when adding torrent to tr"
 fi
 
+if [[ $input_path == /home/vdisk0/Res/Mutable/Complete/Local* || $input_path == /home/vdisk0/PT/Complete/Local* ]]; then
+    echo "[`date`] local file, won't move to secondary client"
+    exit 0
+elif [[ $input_path == /home/vdisk0/Res/Mutable/Complete/ISO* || $input_path == /home/vdisk0/PT/Complete/ISO* ]]; then
+    filter_keyword="fi"
+else
+    filter_keyword="chi"
+fi
 
-if ! source $lib_dir/find_node.sh; then
+
+if ! source $lib_dir/find_node.sh $filter_keyword; then
     echo "[`date`] on_complete failed due to find_node.sh!"
     exit 1
 fi
