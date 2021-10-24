@@ -17,7 +17,7 @@ info_hash=$1
 torrent_name=$2
 content_path=$3
 
-if ! /usr/bin/sh $cur_dir/on_complete.sh "$torrent_name" "$content_path" "$info_hash" 2>> $err_file 1>> $log_file; then
+if ! /usr/bin/bash $cur_dir/on_complete.sh "$torrent_name" "$content_path" "$info_hash" 2>> $err_file 1>> $log_file; then
     echo "[`date`] deluge_wrapper failed!" >> $log_file
     exit 1
 fi

@@ -35,12 +35,12 @@ export input_path=$input_path
 export output_path=$output_path
 export secondary_path=$secondary_path
 
-if ! /usr/bin/sh $lib_dir/copy_to_secondary.sh; then
+if ! /usr/bin/bash $lib_dir/copy_to_secondary.sh; then
     echo "[`date`] on_complete.sh failed due to copy_to_secondary.sh!"
     exit 1
 fi
 
-if ! /usr/bin/sh $lib_dir/add_torrent.sh; then
+if ! /usr/bin/bash $lib_dir/add_torrent.sh; then
     echo "[`date`] on_complete.sh failed due to add_torrent.sh!"
     exit 1
 fi

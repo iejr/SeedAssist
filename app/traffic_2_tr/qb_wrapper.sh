@@ -14,7 +14,7 @@ if ! source $cur_dir/qb_config.sh 2>> $err_file 1>> $log_file; then
     exit 1
 fi
 
-if ! /usr/bin/sh $cur_dir/on_complete.sh "$1" "$2" "$3" 2>> $err_file 1>> $log_file; then
+if ! /usr/bin/bash $cur_dir/on_complete.sh "$1" "$2" "$3" 2>> $err_file 1>> $log_file; then
     echo "[`date`] qb_wrapper failed!" >> $log_file
     echo "/usr/bin/bash qb_wrapper.sh $1 $2 $3" 1>> $retry_file
     exit 1
