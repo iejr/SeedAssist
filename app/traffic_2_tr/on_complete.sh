@@ -17,7 +17,7 @@ if [[ $input_path == /home/vdisk0/Res/Mutable/Complete/Local* || $input_path == 
 elif [[ $input_path == /home/vdisk0/Res/Mutable/Complete/ISO* || $input_path == /home/vdisk0/PT/Complete/ISO* ]]; then
     filter_keyword="fi"
 else
-    filter_keyword="chi"
+    filter_keyword="fi"
 fi
 
 
