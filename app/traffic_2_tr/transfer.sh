@@ -33,6 +33,7 @@ fi
 
 output_path=`echo $input_path | sed "s/vdisk0/$dst_mount_vdisk/"`
 secondary_path=`echo $input_path | sed "s/vdisk0//"`
+torrent_file=$torrent_path/$info_hash".torrent"
 
 export torrent_name=$torrent_name
 export info_hash=$info_hash
@@ -40,12 +41,12 @@ export input_path=$input_path
 export output_path=$output_path
 export secondary_path=$secondary_path
 
-if ! /usr/bin/bash $lib_dir/copy_to_secondary.sh; then
+if ! /usr/bin/bash $lib_dir/copy_to_secondary.sh $input_path $torrent_name $output_path $speed_limit; then
     echo "[`date`] transfer.sh failed due to copy_to_secondary.sh!"
     exit 1
 fi
 
-if ! /usr/bin/bash $lib_dir/add_torrent.sh; then
+if ! /usr/bin/bash $lib_dir/add_torrent.sh "$dst_hostname" "$torrent_file" "$secondary_path"; then
     echo "[`date`] transfer.sh failed due to add_torrent.sh!"
     exit 1
 fi
