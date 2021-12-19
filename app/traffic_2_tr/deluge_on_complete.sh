@@ -2,8 +2,8 @@
 cur_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 log_suffix=""
 log_dir=$cur_dir"/log/deluge"
-log_file=$log_dir"/deluge_on_complete_"$log_suffix".log"
-err_file=$log_dir"/deluge_on_complete_"$log_suffix".error.log"
+log_file=$log_dir"/deluge_on_complete"$log_suffix".log"
+err_file=$log_dir"/deluge_on_complete"$log_suffix".error.log"
 
 info_hash=$1
 torrent_name=$2
