@@ -29,12 +29,12 @@ if [ ! -z $cache_file ]; then
     done < $cache_file
 fi
 
-if [ -z $cache_hit ] && ! source $lib_dir/find_disk.sh; then
-    echo "[`date`] transfer failed due to find_disk.sh!"
+if ! source $lib_dir/find_client; then
+    echo "[`date`] transfer failed due to find_client.sh!"
     exit 1
 fi
 
-output_path="/home/vdisk$dst_id/"$data_path
+output_path="$dst_mount_point/"$data_path
 data_path="/home/$client_tag/"$data_path
 torrent_file="/home/$client_tag/"$torrent_file
 
@@ -52,7 +52,7 @@ if [ -z $cache_hit ] && [ -n "$cache_file" ]; then
     echo -e \"$file_id\" \"$dst_id\" | tee -a $cache_file
 fi
 
-if ! /usr/bin/bash $lib_dir/add_torrent.sh "127.0.0.1" "$torrent_file" "$output_path" "dst_id"; then
+if ! /usr/bin/bash $lib_dir/add_torrent.sh "$torrent_file" "$output_path" "$dst_hostname" "dst_port"; then
     echo "[`date`] transfer.sh failed due to add_torrent.sh!"
     exit 1
 fi

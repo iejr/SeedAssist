@@ -2,12 +2,14 @@
 cur_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 echo "[`date`] start add_torrent ..."
 
-dst_hostname=$1
-torrent_file=$2
-data_path=$3
-tr_id=$4
+torrent_file=$1
+data_path=$2
+tr_hostname=$3
+tr_hostname=$4
+tr_port=$5
 
-echo "[`date`] hostname: " $dst_hostname
+echo "[`date`] hostname: " $tr_hostname
+echo "[`date`] port: " $tr_port
 echo "[`date`] torrent_file: " $torrent_file
 echo "[`date`] data_path: " $data_path
 
@@ -15,12 +17,8 @@ if ! source $cur_dir/credential_config.sh; then
     echo "[`date`] transfer failed import credetials from credential_config.sh! It's likely to fail when adding torrent to tr"
 fi
 
-if [ ! -z $tr_id ]; then
-    tr_port=$(($tr_port+$tr_id))
-fi
-
 echo "to start add_torrent.py"
-if ! /usr/bin/python3 $cur_dir/add_torrent.py "$dst_hostname" "$tr_port" "$tr_username" "$tr_password" "$torrent_file" "$data_path"; then
+if ! /usr/bin/python3 $cur_dir/add_torrent.py "$tr_hostname" "$tr_port" "$tr_username" "$tr_password" "$torrent_file" "$data_path"; then
     echo "Failed to execute add_torrent.py!"
     exit 1
 fi
