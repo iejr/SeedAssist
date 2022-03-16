@@ -7,25 +7,36 @@ data_path=$1
 torrent_name=$2
 torrent_file=$3
 client_tag=$4
+cache_file=$5
 
 if [[ $data_path == Res/Mutable/Complete/Local* ]]; then
     echo "[`date`] local file, won't transfer to seed server"
     exit 0
 fi
 
+file_id="$data_path"/"$torrent_name"
 
-if ! source $lib_dir/find_disk.sh; then
+if [ ! -z $cache_file ]; then
+    while read record; do
+        mapfile -t params < <(xargs -n1 <<<"$record")
+	test_file_id=${params[0]}
+	test_dst_id=${params[1]}
+	if [[ $file_id == $test_file_id ]]; then
+	    cache_hit=1
+	    export dst_id=$test_dst_id
+	    break
+	fi
+    done < $cache_file
+fi
+
+if [ -z $cache_hit ] && ! source $lib_dir/find_disk.sh; then
     echo "[`date`] transfer failed due to find_disk.sh!"
     exit 1
 fi
 
-output_path="/home/$dst_mount_vdisk/"$data_path
+output_path="/home/vdisk$dst_id/"$data_path
 data_path="/home/$client_tag/"$data_path
 torrent_file="/home/$client_tag/"$torrent_file
-
-export data_path=$data_path
-export torrent_file=$torrent_file
-export output_path=$output_path
 
 echo "input path: $data_path"
 echo "input filename: $torrent_name"
@@ -37,11 +48,15 @@ if ! /usr/bin/bash $lib_dir/copy_to_secondary.sh "$data_path" "$torrent_name" "$
     exit 1
 fi
 
+if [ -z $cache_hit ] && [ -n "$cache_file" ]; then
+    echo -e \"$file_id\" \"$dst_id\" | tee -a $cache_file
+fi
+
 if ! /usr/bin/bash $lib_dir/add_torrent.sh "127.0.0.1" "$torrent_file" "$output_path" "dst_id"; then
     echo "[`date`] transfer.sh failed due to add_torrent.sh!"
     exit 1
 fi
 
-rm $torrent_file
+rm "$torrent_file"
 
 echo "[`date`] end transfer.sh"
