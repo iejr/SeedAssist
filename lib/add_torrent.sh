@@ -5,8 +5,7 @@ echo "[`date`] start add_torrent ..."
 torrent_file=$1
 data_path=$2
 tr_hostname=$3
-tr_hostname=$4
-tr_port=$5
+tr_port=$4
 
 echo "[`date`] hostname: " $tr_hostname
 echo "[`date`] port: " $tr_port
