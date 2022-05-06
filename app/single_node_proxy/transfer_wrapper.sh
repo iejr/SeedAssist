@@ -28,17 +28,21 @@ if [ ! -n "$scan_file" ]; then
     scan_file="/home/$client_tag/Res/Mutable/todolist"
 fi
 
-mv -f $scan_file /tmp/todolist &&
-while read task; do
-    echo "[`date`] transfer_wrapper find a new job! $task" >> $log_file
-    mapfile -t params < <(xargs -n1 <<<"$task")
-    data_path=${params[0]}
-    torrent_name=${params[1]}
-    torrent_file=${params[2]}
-    if ! /usr/bin/bash $cur_dir/transfer.sh "$data_path" "$torrent_name" "$torrent_file" "$client_tag" "$cache_file" 2>> $err_file 1>> $log_file; then
-      echo "[`date`] transfer_wrapper failed!" >> $log_file
-      echo -e "\"$data_path\" \"$torrent_name\" \"$torrent_file\" \"$client_tag\"" 1>> $retry_file
-    fi
-done < /tmp/todolist
+while true; do
+    mv -f $scan_file /tmp/todolist &&
+    while read task; do
+        echo "[`date`] transfer_wrapper find a new job! $task" >> $log_file
+        mapfile -t params < <(xargs -n1 <<<"$task")
+        data_path=${params[0]}
+        torrent_name=${params[1]}
+        torrent_file=${params[2]}
+        if ! /usr/bin/bash $cur_dir/transfer.sh "$data_path" "$torrent_name" "$torrent_file" "$client_tag" "$cache_file" 2>> $err_file 1>> $log_file; then
+          echo "[`date`] transfer_wrapper failed!" >> $log_file
+          echo -e "\"$data_path\" \"$torrent_name\" \"$torrent_file\" \"$client_tag\"" 1>> $retry_file
+        fi
+    done < /tmp/todolist
+  
+    sleep 60
+done
 
 echo "[`date`] end transfer_wrapper.sh" >> $log_file
