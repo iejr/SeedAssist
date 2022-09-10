@@ -1,2 +1,2 @@
 # SeedAssist
-Tools helping seeding
+Tools help seeding
