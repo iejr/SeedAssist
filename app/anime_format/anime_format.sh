@@ -29,6 +29,7 @@ FormatEpisode() {
     local format_episode_name=($(echo $episode_name | sed \
                       -e "s/\[\([0-9]\{2\}\)\]/\[S${season_num}E\1\]/" \
                       -e "s/\[\([0-9]\{2\}\)[vV][0-9]\]/\[S${season_num}E\1\]/" \
+                      -e "s/\[\([0-9]\{2\}\)\ END/\[S${season_num}E\1\]/" \
                       -e "s/\ \([0-9]\{2\}\)\ /\[S${season_num}E\1\]/" \
                       -e "s/\ \([0-9]\{2\}\)[vV][0-9]\ /\[S${season_num}E\1\]/" \
                       -e "s/\ \([0-9]\{2\}\)\[/\[S${season_num}E\1\]/" \
